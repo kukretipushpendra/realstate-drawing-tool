@@ -811,7 +811,7 @@ const DrawingTabContainer: React.FC = () => {
               onClick={handleToggleFullscreen}
               title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
             >
-              {isFullscreen ? '⛶' : '◲'}
+              {isFullscreen ? '◲' : '⛶'}
             </button>
           </div>
 
