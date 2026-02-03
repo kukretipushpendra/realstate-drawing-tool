@@ -4,15 +4,11 @@ import Konva from 'konva';
 import type { Point, DrawingMode } from './types';
 import { useDrawingCanvas } from './useDrawingCanvas';
 import { ShapeRenderer } from './shapes/ShapeRenderer';
-import { AgGridReact } from 'ag-grid-react';
-import type { ColDef, RowStyle } from 'ag-grid-community';
 import { AngleInputDialog } from './dialogs/AngleInputDialog';
 import { PIXELS_PER_FOOT, pixelsToFeet, feetToPixels } from './unitConversion';
 import './DrawingTabContainer.css';
 
 const GRID_CELL_SIZE_PIXELS = PIXELS_PER_FOOT * 10; // Grid cell size: 10x10 feet = 80 pixels
-const VISIBLE_COLUMNS = 25;
-const VISIBLE_ROWS = 10;
 
 type TableRow = {
   id: string;
@@ -128,13 +124,11 @@ const DrawingTabContainer: React.FC = () => {
     clearCanvas,
     saveDrawing,
     undo,
-    deleteObject,
     updateCurrentObjectPoints,
     updateCurrentObjectProperties,
   } = useDrawingCanvas();
 
   const [tableRows, setTableRows] = useState<TableRow[]>([]);
-  const [selectedRow, setSelectedRow] = useState<string | null>(null);
   const [hint, setHint] = useState<string>('Select a drawing tool to begin');
   const [zoom, setZoom] = useState(1);
   const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
@@ -389,7 +383,6 @@ const DrawingTabContainer: React.FC = () => {
                   }
                 );
                 setTableRows((rows) => [...rows, newRow]);
-                setSelectedRow(newRow.id);
               }
             }, 0);
 
@@ -458,7 +451,6 @@ const DrawingTabContainer: React.FC = () => {
                 }
               );
               setTableRows((rows) => [...rows, newRow]);
-              setSelectedRow(newRow.id);
             }
           }, 0);
         }
@@ -618,7 +610,6 @@ const DrawingTabContainer: React.FC = () => {
     if (window.confirm('Are you sure you want to clear all drawings?')) {
       clearCanvas();
       setTableRows([]);
-      setSelectedRow(null);
       setHint('Canvas cleared');
     }
   };
@@ -676,7 +667,6 @@ const DrawingTabContainer: React.FC = () => {
             }
           );
           setTableRows((rows) => [...rows, newRow]);
-          setSelectedRow(newRow.id);
         }
       }, 0);
     }, 0);
@@ -694,45 +684,6 @@ const DrawingTabContainer: React.FC = () => {
     setMode(null);
     setHint('Ready');
   };
-
-  const handleDelete = () => {
-    if (selectedRow) {
-      // Find the index of the selected row
-      const selectedIndex = tableRows.findIndex((r) => r.id === selectedRow);
-      
-      // Delete from table
-      const updatedRows = tableRows.filter((r) => r.id !== selectedRow);
-      setTableRows(updatedRows);
-      
-      // Delete from canvas
-      deleteObject(selectedRow);
-      
-      // Determine which row to select next
-      if (updatedRows.length === 0) {
-        // No rows left, clear selection
-        setSelectedRow(null);
-      } else if (selectedIndex >= updatedRows.length) {
-        // Deleted row was the last one, select the new last row
-        setSelectedRow(updatedRows[updatedRows.length - 1].id);
-      } else {
-        // Deleted row was first or middle, select the next row
-        setSelectedRow(updatedRows[selectedIndex].id);
-      }
-    }
-  };
-
-  const columnDefs: ColDef<TableRow>[] = [
-    { headerName: 'Seq', field: 'sequence', flex: 0.4, minWidth: 50 },
-    { headerName: 'Type', field: 'shapeType', flex: 0.6, minWidth: 80 },
-    { headerName: 'Class', field: 'class', flex: 0.7, minWidth: 100 },
-    { headerName: 'Drawing Adjustments', field: 'adjustments', flex: 1, minWidth: 120 },
-    { headerName: 'Drawing Calls', field: 'drawingCalls', flex: 1.2, minWidth: 150 },
-    { headerName: 'Arc Details', field: 'arcDetails', flex: 1, minWidth: 120 },
-    { headerName: 'Sqft', field: 'sqft', flex: 0.6, minWidth: 80 },
-    { headerName: 'Physical Good', field: 'physicalGood', flex: 0.8, minWidth: 100 },
-    { headerName: 'Building Notes', field: 'buildingNotes', flex: 1, minWidth: 120 },
-    { headerName: 'Page', field: 'page', flex: 0.5, minWidth: 60 },
-  ];
 
   return (
     <div className="drawing-tab-container" ref={containerRef}>
