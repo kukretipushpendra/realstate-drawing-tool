@@ -1,8 +1,10 @@
 node_modules/
 dist/
 .env
+.env.local
 .DS_Store
 .vscode/
+.vercel/
 copy-files.js
 copy-files.sh
 deploy.bat
@@ -13,3 +15,4 @@ INDEX.md
 QUICK_START.md
 SETUP_COMPLETE.md
 setup-package.json
+DEPLOYMENT_CHECKLIST.md

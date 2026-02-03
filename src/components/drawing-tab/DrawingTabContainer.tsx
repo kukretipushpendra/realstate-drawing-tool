@@ -11,8 +11,6 @@ import { PIXELS_PER_FOOT, pixelsToFeet, feetToPixels } from './unitConversion';
 import './DrawingTabContainer.css';
 
 const GRID_CELL_SIZE_PIXELS = PIXELS_PER_FOOT * 10; // Grid cell size: 10x10 feet = 80 pixels
-const VISIBLE_COLUMNS = 25;
-const VISIBLE_ROWS = 10;
 
 type TableRow = {
   id: string;
