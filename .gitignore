@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.DS_Store
+.vscode/
+copy-files.js
+copy-files.sh
+deploy.bat
+deploy.sh
+DEPLOYMENT.md
+FILES_AND_COMMANDS.md
+INDEX.md
+QUICK_START.md
+SETUP_COMPLETE.md
+setup-package.json

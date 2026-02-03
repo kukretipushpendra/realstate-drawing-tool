@@ -1,0 +1,204 @@
+.curve-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.curve-dialog {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 450px;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.curve-dialog-header {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.curve-dialog-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.curve-dialog-content {
+  padding: 25px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.position-info {
+  background: #f0f4ff;
+  border-left: 4px solid #8b5cf6;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #555;
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.required {
+  color: #e74c3c;
+}
+
+.input-field {
+  padding: 12px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.input-field:hover:not(:focus) {
+  border-color: #bbb;
+}
+
+.help-text {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.preview-info {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  color: #555;
+}
+
+.preview-info p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.preview-info strong {
+  color: #8b5cf6;
+  font-weight: 600;
+}
+
+.error-message {
+  background: #fee;
+  color: #c33;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  border-left: 4px solid #e74c3c;
+}
+
+.curve-dialog-footer {
+  background: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn {
+  padding: 10px 24px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-cancel {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.btn-cancel:hover {
+  background: #d0d0d0;
+}
+
+.btn-draw {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+}
+
+.btn-draw:hover {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-draw:active {
+  transform: translateY(0);
+}
