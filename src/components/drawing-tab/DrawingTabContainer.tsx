@@ -11,16 +11,13 @@ import { PIXELS_PER_FOOT, pixelsToFeet, feetToPixels } from './unitConversion';
 import './DrawingTabContainer.css';
 
 const GRID_CELL_SIZE_PIXELS = PIXELS_PER_FOOT * 10; // Grid cell size: 10x10 feet = 80 pixels
+const VISIBLE_COLUMNS = 25;
+const VISIBLE_ROWS = 10;
 
 type TableRow = {
   id: string;
   sequence: number;
   shapeType: DrawingMode;
-  startPoint?: string;
-  endPoint?: string;
-  dimensions?: string;
-  area?: string;
-  perimeter?: string;
   class: string;
   adjustments: string;
   drawingCalls: string;
@@ -29,9 +26,6 @@ type TableRow = {
   physicalGood: string;
   buildingNotes: string;
   page: string;
-  createdAt?: string;
-  updatedAt?: string;
-  status?: string;
 };
 
 const TOOL_CONFIG: Record<string, { label: string; icon: string }> = {
@@ -62,11 +56,6 @@ const createTableRow = (
   sequence: number,
   shapeType: DrawingMode,
   options: {
-    startPoint?: string;
-    endPoint?: string;
-    dimensions?: string;
-    area?: string;
-    perimeter?: string;
     class?: string;
     adjustments?: string;
     drawingCalls?: string;
@@ -75,20 +64,12 @@ const createTableRow = (
     physicalGood?: string;
     buildingNotes?: string;
     page?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    status?: string;
   } = {}
 ): TableRow => {
   return {
     id,
     sequence,
     shapeType,
-    startPoint: options.startPoint || '',
-    endPoint: options.endPoint || '',
-    dimensions: options.dimensions || '',
-    area: options.area || '',
-    perimeter: options.perimeter || '',
     class: options.class || '',
     adjustments: options.adjustments || '',
     drawingCalls: options.drawingCalls || '',
@@ -97,9 +78,6 @@ const createTableRow = (
     physicalGood: options.physicalGood || '',
     buildingNotes: options.buildingNotes || '',
     page: options.page || '',
-    createdAt: options.createdAt || new Date().toISOString(),
-    updatedAt: options.updatedAt || new Date().toISOString(),
-    status: options.status || 'active',
   };
 };
 
@@ -184,13 +162,16 @@ const DrawingTabContainer: React.FC = () => {
   }, []);
 
   // Calculate canvas dimensions based on fullscreen state
-  const canvasWidth = isFullscreen ? windowSize.width : windowSize.width - 40;
-  const canvasHeight = isFullscreen ? windowSize.height - 120 : windowSize.height - 320;
+  const canvasWidth = windowSize.width;
+  const toolbarHeight = 80;
+  const hintBarHeight = 10;
+  const canvasHeight = isFullscreen ? windowSize.height - toolbarHeight : windowSize.height - toolbarHeight - hintBarHeight;
 
-  // Calculate initial position with -2 feet margin from left and bottom
-  const marginFeetPixels = 2 * PIXELS_PER_FOOT; // 2 feet margin = 8 pixels
-  const initialStageX = marginFeetPixels;
-  const initialStageY = canvasHeight - marginFeetPixels;
+  // Calculate initial position with 1% margin from left and 10% margin from bottom for axis visibility
+  const marginLeftPixels = Math.max(canvasWidth, canvasHeight) * 0.01; // 1% margin from left
+  const marginBottomPixels = canvasHeight * 0.05; // 10% margin from bottom
+  const initialStageX = marginLeftPixels;
+  const initialStageY = canvasHeight - marginBottomPixels;
 
   const gridLines = generateInfiniteGridLines(stagePos.x, stagePos.y, canvasWidth, canvasHeight, GRID_CELL_SIZE_PIXELS, zoom);
 
@@ -741,141 +722,16 @@ const DrawingTabContainer: React.FC = () => {
   };
 
   const columnDefs: ColDef<TableRow>[] = [
-    { 
-      headerName: 'Seq', 
-      field: 'sequence', 
-      flex: 0.4, 
-      minWidth: 50,
-      sortable: true,
-      filter: true,
-    },
-    { 
-      headerName: 'Type', 
-      field: 'shapeType', 
-      flex: 0.6, 
-      minWidth: 100,
-      sortable: true,
-      filter: true,
-    },
-    { 
-      headerName: 'Start Point', 
-      field: 'startPoint', 
-      flex: 0.8, 
-      minWidth: 110,
-      sortable: true,
-    },
-    { 
-      headerName: 'End Point', 
-      field: 'endPoint', 
-      flex: 0.8, 
-      minWidth: 110,
-      sortable: true,
-    },
-    { 
-      headerName: 'Dimensions', 
-      field: 'dimensions', 
-      flex: 0.8, 
-      minWidth: 110,
-      sortable: true,
-    },
-    { 
-      headerName: 'Area', 
-      field: 'area', 
-      flex: 0.6, 
-      minWidth: 80,
-      sortable: true,
-    },
-    { 
-      headerName: 'Perimeter', 
-      field: 'perimeter', 
-      flex: 0.7, 
-      minWidth: 90,
-      sortable: true,
-    },
-    { 
-      headerName: 'Class', 
-      field: 'class', 
-      flex: 0.7, 
-      minWidth: 100,
-      sortable: true,
-      filter: true,
-    },
-    { 
-      headerName: 'Drawing Adjustments', 
-      field: 'adjustments', 
-      flex: 1, 
-      minWidth: 140,
-      sortable: true,
-    },
-    { 
-      headerName: 'Drawing Calls', 
-      field: 'drawingCalls', 
-      flex: 1.2, 
-      minWidth: 150,
-      sortable: true,
-    },
-    { 
-      headerName: 'Arc Details', 
-      field: 'arcDetails', 
-      flex: 1, 
-      minWidth: 120,
-      sortable: true,
-    },
-    { 
-      headerName: 'Sqft', 
-      field: 'sqft', 
-      flex: 0.6, 
-      minWidth: 80,
-      sortable: true,
-      filter: 'agNumberColumnFilter',
-    },
-    { 
-      headerName: 'Physical Good', 
-      field: 'physicalGood', 
-      flex: 0.9, 
-      minWidth: 120,
-      sortable: true,
-      filter: true,
-    },
-    { 
-      headerName: 'Building Notes', 
-      field: 'buildingNotes', 
-      flex: 1.2, 
-      minWidth: 150,
-      sortable: true,
-    },
-    { 
-      headerName: 'Page', 
-      field: 'page', 
-      flex: 0.5, 
-      minWidth: 60,
-      sortable: true,
-      filter: true,
-    },
-    { 
-      headerName: 'Status', 
-      field: 'status', 
-      flex: 0.6, 
-      minWidth: 80,
-      sortable: true,
-      filter: true,
-    },
-    { 
-      headerName: 'Created', 
-      field: 'createdAt', 
-      flex: 1, 
-      minWidth: 180,
-      sortable: true,
-      filter: 'agDateColumnFilter',
-    },
-    { 
-      headerName: 'Updated', 
-      field: 'updatedAt', 
-      flex: 1, 
-      minWidth: 180,
-      sortable: true,
-      filter: 'agDateColumnFilter',
-    },
+    { headerName: 'Seq', field: 'sequence', flex: 0.4, minWidth: 50 },
+    { headerName: 'Type', field: 'shapeType', flex: 0.6, minWidth: 80 },
+    { headerName: 'Class', field: 'class', flex: 0.7, minWidth: 100 },
+    { headerName: 'Drawing Adjustments', field: 'adjustments', flex: 1, minWidth: 120 },
+    { headerName: 'Drawing Calls', field: 'drawingCalls', flex: 1.2, minWidth: 150 },
+    { headerName: 'Arc Details', field: 'arcDetails', flex: 1, minWidth: 120 },
+    { headerName: 'Sqft', field: 'sqft', flex: 0.6, minWidth: 80 },
+    { headerName: 'Physical Good', field: 'physicalGood', flex: 0.8, minWidth: 100 },
+    { headerName: 'Building Notes', field: 'buildingNotes', flex: 1, minWidth: 120 },
+    { headerName: 'Page', field: 'page', flex: 0.5, minWidth: 60 },
   ];
 
   return (
@@ -1023,47 +879,6 @@ const DrawingTabContainer: React.FC = () => {
               {canvasState.currentObject && <ShapeRenderer object={canvasState.currentObject as any} />}
             </Layer>
           </Stage>
-        </div>
-      </div>
-
-      {/* Data Table Section */}
-      <div className="table-section">
-        <div className="table-header">
-          Drawing Objects
-        </div>
-        <div className="table-content ag-theme-alpine">
-          <AgGridReact
-            rowData={tableRows}
-            columnDefs={columnDefs}
-            domLayout="autoHeight"
-            rowSelection="single"
-            onRowClicked={(params) => {
-              if (params.data) {
-                setSelectedRow(params.data.id);
-              }
-            }}
-            getRowStyle={(params): RowStyle | undefined => {
-              if (params.data && params.data.id === selectedRow) {
-                return { background: '#e3f2fd' };
-              }
-              return undefined;
-            }}
-          />
-        </div>
-
-        {/* Action Buttons */}
-        <div className="action-buttons-section">
-          <div className="action-button-group">
-            <button className="btn-action primary" onClick={handleSave} title="Save Drawing">
-              💾 Save
-            </button>
-            <button className="btn-action danger" onClick={handleDelete} disabled={!selectedRow} title="Delete Selected Row">
-              🗑️ Delete Row
-            </button>
-            <button className="btn-action warning" onClick={undo} title="Undo Last Action">
-              ↶ Undo
-            </button>
-          </div>
         </div>
       </div>
 

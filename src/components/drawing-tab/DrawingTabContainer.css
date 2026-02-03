@@ -1,11 +1,11 @@
 .drawing-tab-container {
   display: flex;
   flex-direction: column;
-  height: auto;
+  height: 100vh;
   background: #ebeff5;
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .drawing-toolbar {
@@ -214,12 +214,13 @@
 .fullscreen-button:active {
   transform: translateY(0);
 }.canvas-wrapper {
-  flex: 3;
+  flex: 1;
   background: white;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .canvas-hint {
@@ -240,6 +241,7 @@
   position: relative;
   overflow: hidden;
   background: white;
+  height: 100%;
 }
 
 .table-section {
