@@ -822,7 +822,7 @@ const DrawingTabContainer: React.FC = () => {
               />
 
               {/* Completed shapes */}
-              {canvasState.objects.map((obj) => (
+              {canvasState.objects.map((obj: any) => (
                 <ShapeRenderer key={obj.id} object={obj} />
               ))}
 
