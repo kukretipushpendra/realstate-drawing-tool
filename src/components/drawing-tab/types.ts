@@ -28,6 +28,7 @@ export interface LegacyBuildingDrawingData {
   text?: string;
   groupName?: string;
   sequence?: number;
+  drawingType?: string; // Type of drawing (Line, Circle, etc.)
   
   // Positioning (stored as strings in legacy for precision)
   footX?: string | number;

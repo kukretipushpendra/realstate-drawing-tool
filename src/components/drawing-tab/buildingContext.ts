@@ -7,7 +7,7 @@
  */
 
 import { DrawingObject, DrawingObjectWithMetrics, CanvasState } from './types';
-import { LegacyMeasurementCalculator, LegacyBatchProcessor } from './legacyMapper';
+import { LegacyMeasurementCalculator } from './legacyMapper';
 import { DRAWING_CONSTANTS } from './technicalDebt';
 
 // ============================================================================

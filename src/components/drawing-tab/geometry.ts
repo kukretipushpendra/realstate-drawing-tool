@@ -123,12 +123,10 @@ export const findAlignmentSnaps = (
   // Find closest X alignment
   const centerX = (boundingBox.minX + boundingBox.maxX) / 2;
   let closestX = Infinity;
-  let closestXVal = 0;
   xCoords.forEach((x) => {
     const dist = Math.abs(centerX - x);
     if (dist < closestX && dist < threshold) {
       closestX = dist;
-      closestXVal = x;
       result.x = x;
     }
   });
@@ -136,12 +134,10 @@ export const findAlignmentSnaps = (
   // Find closest Y alignment
   const centerY = (boundingBox.minY + boundingBox.maxY) / 2;
   let closestY = Infinity;
-  let closestYVal = 0;
   yCoords.forEach((y) => {
     const dist = Math.abs(centerY - y);
     if (dist < closestY && dist < threshold) {
       closestY = dist;
-      closestYVal = y;
       result.y = y;
     }
   });

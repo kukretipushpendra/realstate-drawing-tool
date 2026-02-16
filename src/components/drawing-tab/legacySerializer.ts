@@ -10,8 +10,6 @@ import { DrawingObject, LegacyBuildingDrawingData, CanvasState } from './types';
 import {
   LegacyObjectConverter,
   LegacyBatchProcessor,
-  PrecisionConverter,
-  LegacyDrawingTypeMapper,
 } from './legacyMapper';
 
 // ============================================================================
@@ -101,7 +99,7 @@ export class DrawingJSONSerializer {
     }
   }
 
-  private static replacer = (key: string, value: any) => {
+  private static replacer = (_key: string, value: any) => {
     // Handle Date serialization
     if (value instanceof Date) {
       return value.toISOString();

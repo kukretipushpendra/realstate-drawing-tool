@@ -8,11 +8,9 @@ import {
   calculateAngleDegrees,
 } from './geometry';
 import {
-  DRAWING_CONSTANTS,
   DrawingLogger,
   PerformanceTracker,
   validatePointsForMode,
-  DrawingError,
 } from './technicalDebt';
 import { LegacyMeasurementCalculator } from './legacyMapper';
 
@@ -65,15 +63,6 @@ export const useDrawingCanvas = () => {
   const perfRef = useRef(new PerformanceTracker());
   const logger = loggerRef.current;
   const perf = perfRef.current;
-
-  // Helper to record a state in history
-  const recordState = useCallback((newState: CanvasState) => {
-    setHistoryAndRef((prev) => ({
-      past: [...prev.past, prev.present],
-      present: newState,
-      future: [], // Clear future when new action taken
-    }));
-  }, []);
 
   // Get current canvas state (present) but expose history metadata for tests and callers
   const canvasState = canvasStateRef.current;
@@ -299,7 +288,7 @@ export const useDrawingCanvas = () => {
             ...prev.present,
             currentObject: {
               id: generateId(),
-              type: currentMode ?? 'unknown',
+              type: currentMode || 'freeDraw',
               points: [point],
               properties: {},
               timestamp: Date.now(),

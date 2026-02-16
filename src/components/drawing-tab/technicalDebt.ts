@@ -295,7 +295,7 @@ export class PerformanceTracker {
 
   getAllMetrics() {
     const result: Record<string, any> = {};
-    this.measures.forEach((measures, label) => {
+    this.measures.forEach((_, label) => {
       result[label] = this.getMetrics(label);
     });
     return result;

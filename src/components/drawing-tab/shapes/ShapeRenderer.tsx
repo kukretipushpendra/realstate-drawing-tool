@@ -86,7 +86,7 @@ export const ShapeRenderer: React.FC<ShapeRendererProps> = ({ object, isSelected
   };
 
   // Handle resize: moves endpoint for lines, opposite corner for rectangles
-  const makeHandleResizer = (cornerName: string) => (e: any) => {
+  const makeHandleResizer = (_cornerName: string) => (e: any) => {
     e.cancelBubble = true;
     const node = e.target;
     const newX = node.x();

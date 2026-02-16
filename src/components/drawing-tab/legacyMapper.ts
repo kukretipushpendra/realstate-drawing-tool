@@ -378,7 +378,7 @@ export class LegacyMeasurementCalculator {
    * Calculate arc radius from three points (start, control, end)
    * Matches legacy circle calculation
    */
-  static calculateArcRadius(startPoint: Point, controlPoint: Point, endPoint: Point, pixelsPerFoot: number = DRAWING_CONSTANTS.PIXELS_PER_FOOT): number {
+  static calculateArcRadius(startPoint: Point, controlPoint: Point, _endPoint: Point, pixelsPerFoot: number = DRAWING_CONSTANTS.PIXELS_PER_FOOT): number {
     try {
       // Convert to feet
       const s = {
@@ -389,10 +389,10 @@ export class LegacyMeasurementCalculator {
         x: PrecisionConverter.pixelsToFeet(controlPoint.x, pixelsPerFoot),
         y: PrecisionConverter.pixelsToFeet(controlPoint.y, pixelsPerFoot),
       };
-      const e = {
-        x: PrecisionConverter.pixelsToFeet(endPoint.x, pixelsPerFoot),
-        y: PrecisionConverter.pixelsToFeet(endPoint.y, pixelsPerFoot),
-      };
+      // const e = {
+      //   x: PrecisionConverter.pixelsToFeet(endPoint.x, pixelsPerFoot),
+      //   y: PrecisionConverter.pixelsToFeet(endPoint.y, pixelsPerFoot),
+      // };
 
       // Distance from start to control point = radius
       const dx = c.x - s.x;
