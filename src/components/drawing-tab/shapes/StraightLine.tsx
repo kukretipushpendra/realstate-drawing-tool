@@ -6,13 +6,29 @@ import { pixelsToFeet } from '../unitConversion';
 
 interface StraightLineProps {
   points: Point[];
+  isOrtho?: boolean; // New prop to indicate orthogonal mode
 }
 
-export const StraightLine: React.FC<StraightLineProps> = ({ points }) => {
+export const StraightLine: React.FC<StraightLineProps> = ({ points, isOrtho }) => {
   if (points.length < 2) return null;
 
-  const start = points[0];
-  const end = points[points.length - 1];
+  let start = points[0];
+  let end = points[points.length - 1];
+
+  // Apply orthogonal constraint if needed
+  if (isOrtho) {
+    const dx = Math.abs(end.x - start.x);
+    const dy = Math.abs(end.y - start.y);
+
+    if (dx > dy) {
+      // Horizontal line - keep same Y
+      end = { x: end.x, y: start.y };
+    } else {
+      // Vertical line - keep same X
+      end = { x: start.x, y: end.y };
+    }
+  }
+
   const flattenedPoints = [start.x, start.y, end.x, end.y];
   const distancePixels = getDistance(start, end);
   const distanceFeet = pixelsToFeet(distancePixels);

@@ -1,11 +1,11 @@
 .drawing-tab-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: auto;
   background: #ebeff5;
-  border-radius: 0;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .drawing-toolbar {
@@ -55,7 +55,7 @@
   background: rgba(255, 255, 255, 0.15);
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: white;
-  padding: 6px 8px;
+  padding: 0;
   border-radius: 4px;
   cursor: pointer;
   font-size: 18px;
@@ -65,7 +65,7 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  min-width: 36px;
+  width: 36px;
   height: 36px;
   white-space: nowrap;
 }
@@ -127,7 +127,7 @@
   background: rgba(255, 255, 255, 0.15);
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: white;
-  padding: 4px 8px;
+  padding: 0;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
@@ -136,8 +136,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
 }
 
 .zoom-button:hover {
@@ -150,20 +150,26 @@
   font-weight: 500;
   min-width: 45px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
 }
 
 .coordinates-display {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: rgba(0, 0, 0, 0.15);
-  padding: 8px 16px;
+  padding: 8px 12px;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
   color: white;
-  min-width: 200px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px inset rgba(255, 255, 255, 0.3);
+  height: 52px;
+  white-space: nowrap;
 }
 
 .coordinates-label {
@@ -179,30 +185,11 @@
 }
 
 .fullscreen-controls {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.15);
-  padding: 8px 12px;
-  border-radius: 6px;
+  display: none;
 }
 
 .fullscreen-button {
-  background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  line-height: 1;
+  display: none;
 }
 
 .fullscreen-button:hover {
@@ -214,13 +201,21 @@
 .fullscreen-button:active {
   transform: translateY(0);
 }.canvas-wrapper {
-  flex: 1;
+  flex: 3;
   background: white;
   position: relative;
   overflow: hidden;
   display: flex;
+  flex-direction: row;
+  gap: 0;
+}
+
+.canvas-main {
+  flex: 1;
+  display: flex;
   flex-direction: column;
-  height: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .canvas-hint {
@@ -234,6 +229,7 @@
   display: flex;
   align-items: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 
 .canvas-container {
@@ -241,7 +237,6 @@
   position: relative;
   overflow: hidden;
   background: white;
-  height: 100%;
 }
 
 .table-section {
@@ -249,6 +244,9 @@
   border-top: 1px solid #e0e0e0;
   padding: 0;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
 }
 
 .table-header {
@@ -258,11 +256,96 @@
   font-size: 13px;
   font-weight: 600;
   color: #486180;
+  flex-shrink: 0;
 }
 
 .table-content {
-  height: 180px;
-  overflow-y: auto;
+  flex: 1;
+  overflow: auto;
+  background: white;
+}
+
+.table-content.ag-theme-alpine {
+  --ag-font-size: 13px;
+  --ag-borders: 1px solid #e0e0e0;
+  --ag-header-background-color: #f5f5f5;
+  --ag-header-foreground-color: #333;
+  --ag-header-cell-moving-background-color: #e0e0e0;
+  --ag-odd-row-background-color: #fafafa;
+  --ag-row-hover-background-color: #f0f0f0;
+  --ag-row-border-color: #e0e0e0;
+  --ag-header-border-color: #e0e0e0;
+  --ag-cell-horizontal-padding: 12px;
+}
+
+/* Table header styling */
+.table-content.ag-theme-alpine .ag-header-container {
+  background: #f5f5f5;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.table-content.ag-theme-alpine .ag-header-cell {
+  background: #f5f5f5;
+  color: #486180;
+  font-weight: 600;
+  border-right: 1px solid #e0e0e0;
+}
+
+.table-content.ag-theme-alpine .ag-header-cell:last-child {
+  border-right: none;
+}
+
+/* Table row styling */
+.table-content.ag-theme-alpine .ag-row {
+  border-bottom: 1px solid #e0e0e0;
+  height: 32px;
+}
+
+.table-content.ag-theme-alpine .ag-row-even {
+  background-color: #fafafa;
+}
+
+.table-content.ag-theme-alpine .ag-row-odd {
+  background-color: white;
+}
+
+.table-content.ag-theme-alpine .ag-row:hover {
+  background-color: #f0f0f0 !important;
+}
+
+.table-content.ag-theme-alpine .ag-row.ag-row-selected {
+  background-color: #e3f2fd !important;
+}
+
+/* Table cell styling */
+.table-content.ag-theme-alpine .ag-cell {
+  border-right: 1px solid #e0e0e0;
+  color: #333;
+  line-height: 32px;
+  padding: 0 12px;
+}
+
+.table-content.ag-theme-alpine .ag-cell:last-child {
+  border-right: none;
+}
+
+/* Scrollbar styling */
+.table-content.ag-theme-alpine::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-content.ag-theme-alpine::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.table-content.ag-theme-alpine::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 4px;
+}
+
+.table-content.ag-theme-alpine::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }
 
 .action-buttons-section {
@@ -337,6 +420,49 @@
   font-weight: 500;
   white-space: nowrap;
 }
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background: #486180;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  width: 32px;
+  height: 56px;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 6px 0 0 6px;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.canvas-wrapper:hover .sidebar-toggle,
+.sidebar-toggle:hover {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-toggle:hover {
+  background: #3a4d66;
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-50%) translateX(-3px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-toggle:active {
+  transform: translateY(-50%) translateX(-1px);
+}
+
 /* Fullscreen mode styles */
 .drawing-tab-container:fullscreen {
   width: 100vw;

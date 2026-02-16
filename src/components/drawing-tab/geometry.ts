@@ -61,3 +61,91 @@ export const smoothPath = (points: Point[]): Point[] => {
   smoothed.push(points[points.length - 1]);
   return smoothed;
 };
+
+/**
+ * Calculate radius from circle points (center and edge point)
+ * Points: [center, radiusPoint]
+ */
+export const calculateRadius = (points: Point[]): number => {
+  if (points.length < 2) return 0;
+  return getDistance(points[0], points[1]);
+};
+
+/**
+ * Calculate dimensions (width and height) from rectangle corner points
+ * Points: [corner1, corner2]
+ */
+export const calculateDimensions = (points: Point[]): { width: number; height: number } => {
+  if (points.length < 2) return { width: 0, height: 0 };
+  const bounds = getRectangleBounds(points[0], points[1]);
+  return { width: bounds.width, height: bounds.height };
+};
+
+/**
+ * Calculate angle in degrees from two points
+ * Points: [startPoint, endPoint]
+ * Returns angle in degrees (0-360)
+ */
+export const calculateAngleDegrees = (points: Point[]): number => {
+  if (points.length < 2) return 0;
+  const radians = getAngle(points[0], points[1]);
+  let degrees = (radians * 180) / Math.PI;
+  // Normalize to 0-360 range
+  if (degrees < 0) degrees += 360;
+  return degrees;
+};
+
+/**
+ * Find alignment snap points for smart alignment to neighboring objects
+ * Returns the x or y coordinate to snap to if within threshold
+ */
+export const findAlignmentSnaps = (
+  boundingBox: { minX: number; maxX: number; minY: number; maxY: number },
+  allObjects: Array<{ points: Point[] }>,
+  threshold: number = 10
+): { x?: number; y?: number; alignToX: Point[]; alignToY: Point[] } => {
+  const result: { x?: number; y?: number; alignToX: Point[]; alignToY: Point[] } = {
+    alignToX: [],
+    alignToY: [],
+  };
+
+  // Collect all x and y coordinates from other objects
+  const xCoords: number[] = [];
+  const yCoords: number[] = [];
+
+  allObjects.forEach((obj) => {
+    obj.points.forEach((p) => {
+      xCoords.push(p.x);
+      yCoords.push(p.y);
+    });
+  });
+
+  // Find closest X alignment
+  const centerX = (boundingBox.minX + boundingBox.maxX) / 2;
+  let closestX = Infinity;
+  let closestXVal = 0;
+  xCoords.forEach((x) => {
+    const dist = Math.abs(centerX - x);
+    if (dist < closestX && dist < threshold) {
+      closestX = dist;
+      closestXVal = x;
+      result.x = x;
+    }
+  });
+
+  // Find closest Y alignment
+  const centerY = (boundingBox.minY + boundingBox.maxY) / 2;
+  let closestY = Infinity;
+  let closestYVal = 0;
+  yCoords.forEach((y) => {
+    const dist = Math.abs(centerY - y);
+    if (dist < closestY && dist < threshold) {
+      closestY = dist;
+      closestYVal = y;
+      result.y = y;
+    }
+  });
+
+  return result;
+};
+
